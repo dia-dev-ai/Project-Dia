@@ -1,0 +1,26 @@
+[
+  {
+    "content": "User said they feel tired today.",
+    "emotional": true,
+    "weight": "high",
+    "timestamp": "2026-01-28T19:18:08.700914"
+  },
+  {
+    "content": "User joked about something funny.",
+    "emotional": false,
+    "weight": "low",
+    "timestamp": "2026-01-28T19:18:08.709430"
+  },
+  {
+    "content": "i'm tired today",
+    "emotional": true,
+    "weight": "high",
+    "timestamp": "2026-01-29T10:56:56.381495"
+  },
+  {
+    "content": "i'm tired today",
+    "emotional": true,
+    "weight": "high",
+    "timestamp": "2026-01-29T10:57:23.079656"
+  }
+]
