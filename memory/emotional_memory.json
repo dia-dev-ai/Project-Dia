@@ -13,7 +13,7 @@
       "notes": "Emotional query detected."
     },
     "stress": {
-      "sensitivity_score": 0.039999999999999494,
+      "sensitivity_score": 0.0,
       "last_triggered": "2026-04-10T21:27:32.517416",
       "decay_rate": 0.02,
       "notes": ""

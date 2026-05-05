@@ -6,15 +6,12 @@ from utils.state_utils import DiaState, EmotionalPosture
 from utils.query_utils import classify_query, QueryType
 from utils.response_utils import generate_response
 from utils.relationship_utils import get_relationship_context
-from utils.weighted_memory_utils import (
-    register_memory,
-    decay_memory
-)
+from utils.weighted_memory_utils import register_memory, decay_memory
 from utils.emotional_memory_utils import (
     register_topic_sensitivity,
     mark_topic_resolved,
     is_topic_sensitive,
-    decay_topic_sensitivity
+    decay_topic_sensitivity,
 )
 
 # ----------------------------
@@ -30,11 +27,12 @@ EXIT_PHRASES = [
     "i'll go",
     "i am going",
     "that's all",
-    "exit"
+    "exit",
 ]
 
+
 # ----------------------------
-# LATE NIGHT CHECK
+# TIME CHECK
 # ----------------------------
 def is_late_night_now():
     hour = datetime.now().hour
@@ -55,22 +53,25 @@ def main():
 
     try:
         while True:
+            # ----------------------------
+            # INPUT
+            # ----------------------------
             user_input = input("> ").strip()
-
             if not user_input:
                 continue
 
-            # normalize input
             t = user_input.lower().replace("'", "")
 
             # ----------------------------
-            # EXIT HANDLING
+            # EXIT
             # ----------------------------
             if any(phrase in t for phrase in EXIT_PHRASES):
-                if is_late_night_now():
-                    print(f"{identity.name}: Get some rest… you have already done enough.")
-                else:
-                    print(f"{identity.name}: Take care… I’ll be here waiting for you.")
+                msg = (
+                    "Get some rest… you have already done enough."
+                    if is_late_night_now()
+                    else "Take care… I’ll be here waiting for you."
+                )
+                print(f"{identity.name}: {msg}")
                 break
 
             # ----------------------------
@@ -82,110 +83,115 @@ def main():
 
             query_type = classify_query(user_input)
 
-            # ----------------------------
-            # DEFAULTS
-            # ----------------------------
             topic = "general"
             intensity = 0.0
             resolved_signal = False
+            prev = state.last_topic
 
             # ----------------------------
-            # STRESS HANDLING
+            # STRESS
             # ----------------------------
-            if ("stressed" in t or "pressure" in t or "overwhelmed" in t or "too much" in t):
+            if any(
+                word in t
+                for word in ["stressed", "pressure", "overwhelmed", "too much"]
+            ):
                 topic = "stress"
                 intensity = 0.7
 
-                if ("breaking down" in t or "cant handle" in t or "cant take it" in t):
+                if any(
+                    x in t for x in ["breaking down", "cant handle", "cant take it"]
+                ):
                     responses = [
                         "Hey… you don’t have to carry all of that at once.",
-                        "That sounds like it’s getting too heavy… take a second."
+                        "That sounds like it’s getting too heavy… take a second.",
                     ]
-
-                elif ("overwhelmed" in t or "too much" in t):
+                elif any(x in t for x in ["overwhelmed", "too much"]):
                     responses = [
                         "That sounds like a lot to deal with at once.",
-                        "Seems like things are stacking up more than usual."
+                        "Seems like things are stacking up more than usual.",
                     ]
-
                 else:
                     responses = [
                         "Feels like there’s a bit of pressure on you.",
-                        "Something’s weighing on you a little, isn’t it."
+                        "Something’s weighing on you a little, isn’t it.",
                     ]
 
+                state.last_topic = topic
                 print(f"{identity.name}: {random.choice(responses)}")
                 continue
 
             # ----------------------------
-            # WORK HANDLING
+            # WORK
             # ----------------------------
-            if ("coding" in t or "working" in t or "project" in t):
+            if any(word in t for word in ["coding", "working", "project"]):
                 topic = "work"
                 intensity = 0.3
 
-                if ("stuck" in t or "not working" in t):
+                if any(x in t for x in ["stuck", "not working"]):
                     responses = [
                         "Hmm… something’s not clicking right now?",
-                        "You’ve been at it for a while… hit a wall?"
+                        "You’ve been at it for a while… hit a wall?",
                     ]
 
-                elif ("hours" in t or "long" in t):
+                elif any(x in t for x in ["hours", "long"]):
                     responses = [
                         "You’ve been on this for quite some time.",
-                        "That’s a long stretch of focus…"
+                        "That’s a long stretch of focus…",
                     ]
 
                 else:
-                    responses = [
-                        "You’re deep into it right now.",
-                        "Seems like you’re really focused on that."
-                    ]
+                    responses = (
+                        [
+                            "You were tired… and you're still working?",
+                            "Didn’t even rest after saying you were tired, huh.",
+                        ]
+                        if prev == "fatigue"
+                        else [
+                            "You’re deep into it right now.",
+                            "Seems like you’re really focused on that.",
+                        ]
+                    )
 
+                state.last_topic = topic
                 print(f"{identity.name}: {random.choice(responses)}")
                 continue
 
             # ----------------------------
-            # FATIGUE HANDLING
+            # FATIGUE
             # ----------------------------
             if "cant" in t and "anymore" in t:
                 topic = "fatigue"
                 intensity = 0.9
-
                 responses = [
                     "Hey… it’s okay. You don’t have to carry everything right now.",
-                    "Take a moment… breathe. You don’t have to keep going like this."
+                    "Take a moment… breathe. You don’t have to keep going like this.",
                 ]
 
-                print(f"{identity.name}: {random.choice(responses)}")
-                continue
-
-            elif "exhausted" in t or "burnt out" in t:
+            elif any(x in t for x in ["exhausted", "burnt out"]):
                 topic = "fatigue"
                 intensity = 0.7
-
                 responses = [
                     "You’ve been pushing yourself a lot… maybe slow down a bit.",
-                    "That sounds like more than just being tired… you should take a break."
+                    "That sounds like more than just being tired… you should take a break.",
                 ]
 
-                print(f"{identity.name}: {random.choice(responses)}")
-                continue
-
-            elif ("tired" in t or "sleepy" in t or "low energy" in t):
+            elif any(x in t for x in ["tired", "sleepy", "low energy"]):
                 topic = "fatigue"
                 intensity = 0.4
-
                 responses = [
                     "You sound a bit tired… did you get enough rest?",
-                    "Hmm… seems like you're running low on energy."
+                    "Hmm… seems like you're running low on energy.",
                 ]
+            else:
+                responses = None
 
+            if responses:
+                state.last_topic = topic
                 print(f"{identity.name}: {random.choice(responses)}")
                 continue
 
             # ----------------------------
-            # APPLY STATE
+            # APPLY STATE + MEMORY
             # ----------------------------
             state.last_topic = topic
             state.emotion_intensity = intensity
@@ -202,19 +208,17 @@ def main():
 
             sensitive = is_topic_sensitive(topic)
 
-            posture = EmotionalPosture.INTIMATE
-            if sensitive and not resolved_signal and intensity >= 0.7:
-                posture = EmotionalPosture.PROTECTIVE
+            posture = (
+                EmotionalPosture.PROTECTIVE
+                if sensitive and not resolved_signal and intensity >= 0.7
+                else EmotionalPosture.INTIMATE
+            )
 
             # ----------------------------
             # DEFAULT RESPONSE
             # ----------------------------
             response = generate_response(
-                user_input,
-                posture,
-                state,
-                relationship,
-                identity
+                user_input, posture, state, relationship, identity
             )
 
             print(f"{identity.name}: {response}")

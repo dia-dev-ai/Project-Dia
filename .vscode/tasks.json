@@ -1,0 +1,13 @@
+{
+    "versions": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Dia",
+            "type": "shell",
+            "command": "python main.py",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+    
+}
