@@ -129,7 +129,7 @@ def main():
 
                 if any(x in t for x in ["stuck", "not working"]):
                     responses = [
-                        "Hmm… something’s not clicking i guess?",
+                        "Hmm… something’s not clicking i abcd?",
                         "You’ve been at it for a while… hit a wall?",
                     ]
 
