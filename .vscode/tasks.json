@@ -1,11 +1,14 @@
 {
-    "versions": "2.0.0",
+    "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run Dia",
+            "label": "push dia updates",
             "type": "shell",
-            "command": "python main.py",
-            "group": "build",
+            "command": ".\\pushall.bat",
+            "group":{
+                "kind": "build",
+                "isDefault": true,
+            }, 
             "problemMatcher": []
         }
     ]
