@@ -24,6 +24,7 @@ class DiaState:
         self.late_night: bool = False
         self.silent: bool = False
         self.last_interaction: datetime | None = None
+        self.dia_emotion_reason = ""
 
         self.last_user_input = ""
         self.previous_user_input = ""
@@ -48,18 +49,21 @@ class DiaState:
     def update_interaction_time(self):
         self.last_interaction = datetime.now(timezone.utc)
 
-    def shift_emotion(self, emotion, intensity):
+    def shift_emotion(self, emotion, intensity, reason=""):
         current = self.dia_emotion
         current_intensity = self.dia_emotion_intensity
 
         if current == emotion:
             self.dia_emotion_intensity = min(1.0, current_intensity + 0.1)
-            return
+            if reason:
+                self.dia_emotion_intensity_reason = reason
+                return
         if current_intensity > intensity:
             self.dia_emotion_intensity -= 0.1
             return
         self.dia_emotion = emotion
         self.dia_emotion_intensity = intensity
+        self.emotion_reason = reason
 
     # ---- snapshot ----
 

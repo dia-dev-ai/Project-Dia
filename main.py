@@ -95,7 +95,7 @@ def main():
                 word in t
                 for word in ["stressed", "pressure", "overwhelmed", "too much"]
             ):
-                state.shift_emotion("concerned", 0.9)
+                state.shift_emotion("concerned", 0.9, "user sounded stressed")
                 topic = "stress"
                 intensity = 0.7
 
@@ -125,7 +125,7 @@ def main():
             # WORK
             # ----------------------------
             if any(word in t for word in ["coding", "working", "project"]):
-                state.shift_emotion("focused", 0.5)
+                state.shift_emotion("focused", 0.5, "user is working on projects")
 
                 topic = "work"
                 intensity = 0.3
@@ -163,7 +163,7 @@ def main():
             # FATIGUE
             # ----------------------------
             if "cant" in t and "anymore" in t:
-                state.shift_emotion("concerned", 0.9)
+                state.shift_emotion("concerned", 0.9, "user sounded exhausted")
                 topic = "fatigue"
                 intensity = 0.9
                 responses = [
@@ -221,7 +221,8 @@ def main():
             # ----------------------------
             # DEFAULT RESPONSE
             # ----------------------------
-
+            if topic == "general":
+                state.shift_emotion("playful", 0.3, "normal conversation")
             response = generate_response(
                 user_input, posture, state, relationship, identity
             )
@@ -234,7 +235,9 @@ def main():
 
             elif state.dia_emotion == "playful":
                 pass
-
+            if state.dia_emotion == "concerned" and "exhausted" in state.emotion_reason:
+                if random.random() < 0.35:
+                    response += " you've been pushing yourself pretty hard lately..."
             print(f"{identity.name}: {response}")
 
     except KeyboardInterrupt:
