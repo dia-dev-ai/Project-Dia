@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class EmotionalPosture(Enum):
@@ -17,6 +17,8 @@ class DiaState:
     """
 
     def __init__(self):
+        self.dia_emotion = "playful"
+        self.dia_emotion_intensity = 0.3
         self.posture: EmotionalPosture = EmotionalPosture.CALM
         self.mood_intensity: str = "medium"  # low / medium / high
         self.late_night: bool = False
@@ -44,7 +46,11 @@ class DiaState:
         self.silent = value
 
     def update_interaction_time(self):
-        self.last_interaction = datetime.utcnow()
+        self.last_interaction = datetime.now(timezone.utc)
+
+    def shift_emotion(self, emotion, intensity):
+        self.dia_emotion = emotion
+        self.dia_emotion_intensity = intensity
 
     # ---- snapshot ----
 
@@ -55,8 +61,6 @@ class DiaState:
             "late_night": self.late_night,
             "silent": self.silent,
             "last_interaction": (
-                self.last_interaction.isoformat()
-                if self.last_interaction
-                else None
+                self.last_interaction.isoformat() if self.last_interaction else None
             ),
         }

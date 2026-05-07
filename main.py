@@ -95,6 +95,7 @@ def main():
                 word in t
                 for word in ["stressed", "pressure", "overwhelmed", "too much"]
             ):
+                state.shift_emotion("concerned", 0.9)
                 topic = "stress"
                 intensity = 0.7
 
@@ -124,6 +125,8 @@ def main():
             # WORK
             # ----------------------------
             if any(word in t for word in ["coding", "working", "project"]):
+                state.shift_emotion("focused", 0.5)
+
                 topic = "work"
                 intensity = 0.3
 
@@ -160,6 +163,7 @@ def main():
             # FATIGUE
             # ----------------------------
             if "cant" in t and "anymore" in t:
+                state.shift_emotion("concerned", 0.9)
                 topic = "fatigue"
                 intensity = 0.9
                 responses = [
@@ -217,9 +221,19 @@ def main():
             # ----------------------------
             # DEFAULT RESPONSE
             # ----------------------------
+
             response = generate_response(
                 user_input, posture, state, relationship, identity
             )
+
+            if state.dia_emotion == "concerned":
+                response = response.replace(".", "...")
+
+            elif state.dia_emotion == "focused":
+                response = response.replace("?", ".")
+
+            elif state.dia_emotion == "playful":
+                pass
 
             print(f"{identity.name}: {response}")
 
