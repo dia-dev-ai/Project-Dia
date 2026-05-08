@@ -25,6 +25,7 @@ class DiaState:
         self.silent: bool = False
         self.last_interaction: datetime | None = None
         self.dia_emotion_reason = ""
+        self.active_emotions = {"playfull": 0.3}
 
         self.last_user_input = ""
         self.previous_user_input = ""
@@ -64,6 +65,29 @@ class DiaState:
         self.dia_emotion = emotion
         self.dia_emotion_intensity = intensity
         self.emotion_reason = reason
+        self.active_emotions[emotion] = intensity
+
+    def decay_emotions(self):
+        updated = {}
+
+        for emotion, value in self.active_emotions.items():
+            vale -= 0.2
+
+            if vale > 0.05:
+                updated[emotion] = round(value, 2)
+
+                if not updated:
+                    updated["playful"] = 0.3
+
+                self.active_emotions = updated
+
+    def get_dominant_emotions(self):
+        if not self.active_emotions:
+            return "playful"
+        return max(self.active_emotions, key=self.active_emotions.get)
+
+    def get_emotion_level(self, emotion):
+        return self.active_emotions.get(emotion, 0)
 
     # ---- snapshot ----
 

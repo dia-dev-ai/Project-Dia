@@ -61,6 +61,7 @@ def main():
                 continue
 
             t = user_input.lower().replace("'", "")
+            state.decay_emotions()
 
             # ----------------------------
             # EXIT
@@ -223,19 +224,46 @@ def main():
             # ----------------------------
             if topic == "general":
                 state.shift_emotion("playful", 0.3, "normal conversation")
+            # --- STYLE DETECTION  ---
+
+            style = "normal"
+
+            concern = state.get_emotion_level("concerned")
+            playful = state.get_emotion_level("playful")
+            focus = state.get_emotion_level("focused")
+            if concern > 0.6:
+                style = "soft"
+            elif playful > 0.6:
+                style = "playful"
+            elif focus > 0.6:
+                style = "direct"
+
+            print(f"[STYLE MODE]: {style}")
+
+            # ---RESPONSE GENERATION ---
             response = generate_response(
                 user_input, posture, state, relationship, identity
             )
 
-            if state.dia_emotion == "concerned":
+            dominant = state.get_dominant_emotions()
+
+            if dominant == "concerned":
                 response = response.replace(".", "...")
 
-            elif state.dia_emotion == "focused":
+            elif dominant == "focused":
                 response = response.replace("?", ".")
 
-            elif state.dia_emotion == "playful":
+            elif dominant == "playful":
                 pass
-            if state.dia_emotion == "concerned" and "exhausted" in state.emotion_reason:
+            # --- EMOTION BLENDING ---
+            concern = state.get_emotion_level("concerned")
+            focus = state.get_emotion_level("focused")
+
+            if concern > 0.5 and focus > 0.3:
+                response += "just don't overpush yourself while working..."
+
+            # --- CONTEXTUAL CALLBACK ---
+            if dominant == "concerned" and "exhausted" in state.emotion_reason:
                 if random.random() < 0.35:
                     response += " you've been pushing yourself pretty hard lately..."
             print(f"{identity.name}: {response}")
