@@ -71,9 +71,9 @@ class DiaState:
         updated = {}
 
         for emotion, value in self.active_emotions.items():
-            vale -= 0.2
+            value -= 0.2
 
-            if vale > 0.05:
+            if value > 0.05:
                 updated[emotion] = round(value, 2)
 
                 if not updated:
