@@ -57,10 +57,12 @@ def main():
             # INPUT
             # ----------------------------
             user_input = input("> ").strip()
+
             if not user_input:
                 continue
 
             t = user_input.lower().replace("'", "")
+
             state.decay_emotions()
 
             # ----------------------------
@@ -72,6 +74,7 @@ def main():
                     if is_late_night_now()
                     else "Take care… I’ll be here waiting for you."
                 )
+
                 print(f"{identity.name}: {msg}")
                 break
 
@@ -88,6 +91,7 @@ def main():
             intensity = 0.0
             resolved_signal = False
             prev = state.last_topic
+            response = None
 
             # ----------------------------
             # STRESS
@@ -97,6 +101,7 @@ def main():
                 for word in ["stressed", "pressure", "overwhelmed", "too much"]
             ):
                 state.shift_emotion("concerned", 0.9, "user sounded stressed")
+
                 topic = "stress"
                 intensity = 0.7
 
@@ -107,20 +112,20 @@ def main():
                         "Hey… you don’t have to carry all of that at once.",
                         "That sounds like it’s getting too heavy… take a second.",
                     ]
+
                 elif any(x in t for x in ["overwhelmed", "too much"]):
                     responses = [
                         "That sounds like a lot to deal with at once.",
                         "Seems like things are stacking up more than usual.",
                     ]
+
                 else:
                     responses = [
                         "Feels like there’s a bit of pressure on you.",
                         "Something’s weighing on you a little, isn’t it.",
                     ]
 
-                state.last_topic = topic
-                print(f"{identity.name}: {random.choice(responses)}")
-                continue
+                response = random.choice(responses)
 
             # ----------------------------
             # WORK
@@ -156,44 +161,49 @@ def main():
                         ]
                     )
 
-                state.last_topic = topic
-                print(f"{identity.name}: {random.choice(responses)}")
-                continue
+                response = random.choice(responses)
 
             # ----------------------------
             # FATIGUE
             # ----------------------------
             if "cant" in t and "anymore" in t:
                 state.shift_emotion("concerned", 0.9, "user sounded exhausted")
+
                 topic = "fatigue"
                 intensity = 0.9
+
                 responses = [
                     "Hey… it’s okay. You don’t have to carry everything right now.",
                     "Take a moment… breathe. You don’t have to keep going like this.",
                 ]
 
+                response = random.choice(responses)
+
             elif any(x in t for x in ["exhausted", "burnt out"]):
+                state.shift_emotion("concerned", 0.7, "user sounded exhausted")
+
                 topic = "fatigue"
                 intensity = 0.7
+
                 responses = [
                     "You’ve been pushing yourself a lot… maybe slow down a bit.",
                     "That sounds like more than just being tired… you should take a break.",
                 ]
 
+                response = random.choice(responses)
+
             elif any(x in t for x in ["tired", "sleepy", "low energy"]):
+                state.shift_emotion("concerned", 0.5, "user sounded tired")
+
                 topic = "fatigue"
                 intensity = 0.4
+
                 responses = [
                     "You sound a bit tired… did you get enough rest?",
                     "Hmm… seems like you're running low on energy.",
                 ]
-            else:
-                responses = None
 
-            if responses:
-                state.last_topic = topic
-                print(f"{identity.name}: {random.choice(responses)}")
-                continue
+                response = random.choice(responses)
 
             # ----------------------------
             # APPLY STATE + MEMORY
@@ -226,24 +236,31 @@ def main():
                 state.shift_emotion("playful", 0.3, "normal conversation")
                 # --- STYLE DETECTION  ---
 
-                style = "normal"
+            style = "normal"
 
-                concern = state.get_emotion_level("concerned")
-                playful = state.get_emotion_level("playful")
-                focus = state.get_emotion_level("focused")
-                if concern > 0.2:
-                    style = "soft"
-                elif playful > 0.6:
-                    style = "playful"
-                elif focus > 0.6:
-                    style = "direct"
+            concern = state.get_emotion_level("concerned")
+            playful = state.get_emotion_level("playful")
+            focus = state.get_emotion_level("focused")
 
-                print(style)
+            if concern > 0.2:
+                style = "soft"
 
-            # ---RESPONSE GENERATION ---
-            response = generate_response(
-                user_input, posture, state, relationship, identity
-            )
+            elif playful > 0.6:
+                style = "playful"
+
+            elif focus > 0.6:
+                style = "direct"
+
+            print(f"[STYLE MODE]: {style}")
+
+            if response is None:
+                response = generate_response(
+                    user_input,
+                    posture,
+                    state,
+                    relationship,
+                    identity,
+                )
 
             dominant = state.get_dominant_emotions()
 
@@ -260,12 +277,13 @@ def main():
             focus = state.get_emotion_level("focused")
 
             if concern > 0.5 and focus > 0.3:
-                response += "just don't overpush yourself while working..."
+                response += " Just don't overpush yourself while working..."
 
             # --- CONTEXTUAL CALLBACK ---
             if dominant == "concerned" and "exhausted" in state.emotion_reason:
                 if random.random() < 0.35:
-                    response += " you've been pushing yourself pretty hard lately..."
+                    response += " You've been pushing yourself pretty hard lately..."
+
             print(f"{identity.name}: {response}")
 
     except KeyboardInterrupt:
