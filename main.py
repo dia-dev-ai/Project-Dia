@@ -280,8 +280,12 @@ def main():
                 response += " Just don't overpush yourself while working..."
 
             # --- CONTEXTUAL CALLBACK ---
-            if dominant == "concerned" and "exhausted" in state.emotion_reason:
-                if random.random() < 0.35:
+            if (
+                dominant == "concerned"
+                and "exhausted" in state.emotion_reason
+                and len(response) < 80
+            ):
+                if random.random() < 0.15:
                     response += " You've been pushing yourself pretty hard lately..."
 
             print(f"{identity.name}: {response}")
