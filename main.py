@@ -238,7 +238,7 @@ def main():
                 elif focus > 0.6:
                     style = "direct"
 
-                print("style test")
+                print(style)
 
             # ---RESPONSE GENERATION ---
             response = generate_response(
