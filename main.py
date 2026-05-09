@@ -242,7 +242,7 @@ def main():
             playful = state.get_emotion_level("playful")
             focus = state.get_emotion_level("focused")
 
-            if concern > 0.2:
+            if concern >= 0.2:
                 style = "soft"
 
             elif playful > 0.6:
