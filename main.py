@@ -260,6 +260,7 @@ def main():
                     state,
                     relationship,
                     identity,
+                    style,
                 )
 
             dominant = state.get_dominant_emotions()
