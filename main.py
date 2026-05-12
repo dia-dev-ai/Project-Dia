@@ -137,31 +137,17 @@ def main():
                 intensity = 0.3
 
                 if any(x in t for x in ["stuck", "not working"]):
-                    responses = [
-                        "Hmm… something’s not clicking i guess?",
-                        "You’ve been at it for a while… hit a wall?",
-                    ]
+                   state.response_intent = "frustrated_work"
 
                 elif any(x in t for x in ["hours", "long"]):
-                    responses = [
-                        "You’ve been on this for quite some time.",
-                        "That’s a long stretch of focus…",
-                    ]
+                    state.response_intent = "overworking"
 
                 else:
-                    responses = (
-                        [
-                            "You were tired… and you're still working?",
-                            "Didn’t even rest after saying you were tired, huh.",
-                        ]
-                        if prev == "fatigue"
-                        else [
-                            "You’re deep into it right now.",
-                            "Seems like you’re really focused on that.",
-                        ]
-                    )
-
-                response = random.choice(responses)
+                     if prev == "fatigue":
+                        state.response_intent = "working_while_tired"
+                     else:
+                        state.response_intent = "focused work"
+ 
 
             # ----------------------------
             # FATIGUE

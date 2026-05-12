@@ -127,6 +127,31 @@ def generate_response(
             "You sound a little tired… did you get enough rest?",
             style,
         )
+    if state.last_topic == "work":
+
+        if intent == "frustrated_work":
+            return apply_style(
+                "Hmm… something’s not clicking right now?",
+                style,
+            )
+
+        elif intent == "overworking":
+            return apply_style(
+                "You’ve been at this for a pretty long stretch…",
+                style,
+            )
+
+        elif intent == "working_while_tired":
+            return apply_style(
+                "You were already tired… and you’re still working?",
+                style,
+            )
+
+        elif intent == "focused_work":
+            return apply_style(
+                "You seem really focused on that right now.",
+                style,
+            )
 
     if posture == EmotionalPosture.PROTECTIVE:
         return apply_style(
