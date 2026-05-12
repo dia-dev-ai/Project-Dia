@@ -175,7 +175,6 @@ def main():
                 state.response_intent = "comfort"
 
             elif any(x in t for x in ["exhausted", "burnt out"]):
-                state.shift_emotion("concerned", 0.7, "user sounded exhausted")
 
                 topic = "fatigue"
                 intensity = 0.7
@@ -183,7 +182,6 @@ def main():
                 style.response_intent = "care"
 
             elif any(x in t for x in ["tired", "sleepy", "low energy"]):
-                state.shift_emotion("concerned", 0.5, "user sounded tired")
 
                 topic = "fatigue"
                 intensity = 0.4
