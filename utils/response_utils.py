@@ -159,6 +159,7 @@ def generate_response(
         initiative = initiate_late_night(state)
 
     if initiative:
+        state.late_night = False
         return apply_style(initiative, style)
 
     # ------------------------------------------------
