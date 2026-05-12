@@ -169,6 +169,7 @@ def generate_response(
         return apply_style(f"My name is {identity.name}.", style)
 
     if text in ("hi", "hello", "hey"):
+        state.late_night_stage = 0
         return apply_style("Hey.", style)
 
     # ------------------------------------------------
