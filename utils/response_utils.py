@@ -109,6 +109,24 @@ def generate_response(
     # EMOTIONAL RESPONSES
     # ----------------------------
     intensity = getattr(state, "emotion_intensity", 0.0)
+    intent = getattr(state, "response_intent", None)
+
+    if state.last_topic == "fatigue":
+        return apply_style(
+            "hey... you don't have to carry everything alone right now.",
+            style,
+        )
+    elif intent == "care":
+        return apply_style(
+            "You’ve been pushing yourself a lot… maybe slow down a bit.",
+            style,
+        )
+
+    elif intent == "checkin":
+        return apply_style(
+            "You sound a little tired… did you get enough rest?",
+            style,
+        )
 
     if posture == EmotionalPosture.PROTECTIVE:
         return apply_style(

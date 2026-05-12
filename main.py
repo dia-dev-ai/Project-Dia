@@ -172,12 +172,7 @@ def main():
                 topic = "fatigue"
                 intensity = 0.9
 
-                responses = [
-                    "Hey… it’s okay. You don’t have to carry everything right now.",
-                    "Take a moment… breathe. You don’t have to keep going like this.",
-                ]
-
-                response = random.choice(responses)
+                state.response_intent = "comfort"
 
             elif any(x in t for x in ["exhausted", "burnt out"]):
                 state.shift_emotion("concerned", 0.7, "user sounded exhausted")
@@ -185,12 +180,7 @@ def main():
                 topic = "fatigue"
                 intensity = 0.7
 
-                responses = [
-                    "You’ve been pushing yourself a lot… maybe slow down a bit.",
-                    "That sounds like more than just being tired… you should take a break.",
-                ]
-
-                response = random.choice(responses)
+                style.response_intent = "care"
 
             elif any(x in t for x in ["tired", "sleepy", "low energy"]):
                 state.shift_emotion("concerned", 0.5, "user sounded tired")
@@ -198,12 +188,7 @@ def main():
                 topic = "fatigue"
                 intensity = 0.4
 
-                responses = [
-                    "You sound a bit tired… did you get enough rest?",
-                    "Hmm… seems like you're running low on energy.",
-                ]
-
-                response = random.choice(responses)
+                style.response_intent = "checkin"
 
             # ----------------------------
             # APPLY STATE + MEMORY
