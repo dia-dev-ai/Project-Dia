@@ -74,84 +74,116 @@ def generate_response(
 ):
     text = re.sub(r"[^\w\s]", "", user_input.lower()).strip()
 
-    # phrase-based awareness
+    # ------------------------------------------------
+    # ACTIVE INTENT HANDLING (TOP PRIORITY)
+    # ------------------------------------------------
+
+    intent = getattr(state, "response_intent", None)
+
+    # FATIGUE
+    if state.last_topic == "fatigue":
+
+        if intent == "comfort":
+            response = apply_style(
+                "Hey… you don’t have to carry everything alone right now.",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "care":
+            response = apply_style(
+                "You’ve been pushing yourself a lot… maybe slow down a bit.",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "checkin":
+            response = apply_style(
+                "You sound a little tired… did you get enough rest?",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+    # WORK
+    if state.last_topic == "work":
+
+        if intent == "frustrated_work":
+            response = apply_style(
+                "Hmm… something’s not clicking right now?",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "overworking":
+            response = apply_style(
+                "You’ve been at this for a pretty long stretch…",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "working_while_tired":
+            response = apply_style(
+                "You were already tired… and you’re still working?",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "focused_work":
+            response = apply_style(
+                "You seem really focused on that right now.",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+    # ------------------------------------------------
+    # LATE NIGHT DETECTION
+    # ------------------------------------------------
+
     if any(p in text for p in LATE_NIGHT_PHRASES):
         state.late_night = True
 
-    # ----------------------------
-    # LATE-NIGHT INITIATIVE
-    # ----------------------------
+    # ------------------------------------------------
+    # LATE NIGHT INITIATIVE
+    # ------------------------------------------------
+
     initiative = None
 
-    if can_initiate(state):
+    if can_initiate(state) and not getattr(state, "response_intent", None):
         initiative = initiate_late_night(state)
 
     if initiative:
         return apply_style(initiative, style)
 
-    # ----------------------------
+    # ------------------------------------------------
     # IDENTITY
-    # ----------------------------
+    # ------------------------------------------------
+
     if any(p in text for p in ("your name", "who are you")):
         return apply_style(f"My name is {identity.name}.", style)
 
     if text in ("hi", "hello", "hey"):
         return apply_style("Hey.", style)
 
-    # ----------------------------
+    # ------------------------------------------------
     # RESOLUTION
-    # ----------------------------
+    # ------------------------------------------------
+
     if getattr(state, "recently_resolved", False):
         state.recently_resolved = False
         return apply_style("Glad you’re feeling better.", style)
 
-    # ----------------------------
-    # EMOTIONAL RESPONSES
-    # ----------------------------
+    # ------------------------------------------------
+    # EMOTIONAL POSTURE
+    # ------------------------------------------------
+
     intensity = getattr(state, "emotion_intensity", 0.0)
-    intent = getattr(state, "response_intent", None)
-
-    if state.last_topic == "fatigue":
-        return apply_style(
-            "hey... you don't have to carry everything alone right now.",
-            style,
-        )
-    elif intent == "care":
-        return apply_style(
-            "You’ve been pushing yourself a lot… maybe slow down a bit.",
-            style,
-        )
-
-    elif intent == "checkin":
-        return apply_style(
-            "You sound a little tired… did you get enough rest?",
-            style,
-        )
-    if state.last_topic == "work":
-
-        if intent == "frustrated_work":
-            return apply_style(
-                "Hmm… something’s not clicking right now?",
-                style,
-            )
-
-        elif intent == "overworking":
-            return apply_style(
-                "You’ve been at this for a pretty long stretch…",
-                style,
-            )
-
-        elif intent == "working_while_tired":
-            return apply_style(
-                "You were already tired… and you’re still working?",
-                style,
-            )
-
-        elif intent == "focused_work":
-            return apply_style(
-                "You seem really focused on that right now.",
-                style,
-            )
 
     if posture == EmotionalPosture.PROTECTIVE and not getattr(
         state, "response_intent", None
@@ -170,43 +202,8 @@ def generate_response(
         if state.last_topic not in ("fatigue", "work", "stress"):
             return apply_style("Yeah, I hear you.", style)
 
-    # ----------------------------
-    # NEUTRAL
-    # ----------------------------
-    nickname = get_random_nickname(identity)
-
-    # ----------------------------
-    # TOPIC-BASED MEMORY RESPONSE
-    # ----------------------------
-    # Fatigue
-    if state.last_topic == "fatigue":
-        strength = get_memory_strength("fatigue")
-
-        if strength > 0.7:
-            return apply_style(
-                "You’ve been pushing yourself a lot… you should get some rest.",
-                style,
-            )
-
-        elif strength > 0.4:
-            return apply_style("Still feeling that way?", style)
-
-        else:
-            return "Yeah, I hear you."
-    # Stress
-    if state.last_topic == "stress":
-        strength = get_memory_strength("stress")
-
-        if strength > 0.7:
-            return apply_style(
-                "That’s been weighing on you for a while… you don’t have to handle it alone.",
-                style,
-            )
-
-        elif strength > 0.4:
-            return apply_style("Still feeling overwhelmed?", style)
-
-        else:
-            return apply_style("That sounds stressful.", style)
+    # ------------------------------------------------
+    # FALLBACK
+    # ------------------------------------------------
 
     return apply_style("What’s on your mind?", style)
