@@ -179,14 +179,14 @@ def main():
                 topic = "fatigue"
                 intensity = 0.7
 
-                style.response_intent = "care"
+                state.response_intent = "care"
 
             elif any(x in t for x in ["tired", "sleepy", "low energy"]):
 
                 topic = "fatigue"
                 intensity = 0.4
 
-                style.response_intent = "checkin"
+                state.response_intent = "checkin"
 
             # ----------------------------
             # APPLY STATE + MEMORY
