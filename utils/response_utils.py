@@ -153,13 +153,19 @@ def generate_response(
                 style,
             )
 
-    if posture == EmotionalPosture.PROTECTIVE:
+    if posture == EmotionalPosture.PROTECTIVE and not getattr(
+        state, "response_intent", None
+    ):
         return apply_style(
             "That sounds really heavy. You don’t have to carry this alone.",
             style,
         )
 
-    if posture == EmotionalPosture.INTIMATE and intensity > 0.0:
+    if (
+        posture == EmotionalPosture.INTIMATE
+        and intensity > 0.0
+        and not getattr(state, "response_intent", None)
+    ):
 
         if state.last_topic not in ("fatigue", "work", "stress"):
             return apply_style("Yeah, I hear you.", style)
@@ -172,23 +178,6 @@ def generate_response(
     # ----------------------------
     # TOPIC-BASED MEMORY RESPONSE
     # ----------------------------
-
-    # Work
-    if state.last_topic == "work":
-        strength = get_memory_strength("work")
-
-        if strength > 0.7:
-            return apply_style(
-                "You’ve been at this for a while… how’s it going?",
-                style,
-            )
-
-        elif strength > 0.4:
-            return apply_style("Still working on that?", style)
-
-        else:
-            return apply_style("How’s that going?", style)
-
     # Fatigue
     if state.last_topic == "fatigue":
         strength = get_memory_strength("fatigue")
