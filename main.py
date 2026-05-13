@@ -225,7 +225,7 @@ def main():
             elif focus > 0.6:
                 style = "direct"
 
-            print(f"[STYLE MODE]: {style}")
+            print(f"[EMOTIONAL TONE]: {style}")
 
             if response is None:
                 response = generate_response(
