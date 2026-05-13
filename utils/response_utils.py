@@ -146,16 +146,19 @@ def generate_response(
     # LATE NIGHT DETECTION
     # ------------------------------------------------
 
-    if any(p in text for p in LATE_NIGHT_PHRASES):
-        state.late_night = True
-
     # ------------------------------------------------
     # LATE NIGHT INITIATIVE
     # ------------------------------------------------
 
     initiative = None
 
-    if can_initiate(state) and not getattr(state, "response_intent", None):
+    late_night_triggered = any(p in text for p in LATE_NIGHT_PHRASES)
+
+    if (
+        late_night_triggered
+        and can_initiate(state)
+        and not getattr(state, "response_intent", None)
+    ):
         initiative = initiate_late_night(state)
 
     if initiative:
