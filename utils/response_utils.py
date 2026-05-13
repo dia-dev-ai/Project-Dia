@@ -52,16 +52,27 @@ def initiate_late_night(state):
 def apply_style(response, style):
 
     if style == "soft":
-        response = response.replace("?", "...")
+        if not response.endswith(
+            (
+                "...",
+                ".",
+                "?",
+                "!",
+            )
+        ):
+            response += "..."
+        return response
 
     elif style == "direct":
+        response = response.replace("I think ", "")
         response = response.replace("maybe ", "")
+        return response
 
     elif style == "playful":
-        if not response.endswith("~"):
+        if not response.endswith(("~", "!", "?")):
             response += " ~"
 
-    return response
+        return response
 
 
 def generate_response(

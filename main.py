@@ -208,22 +208,16 @@ def main():
             # ----------------------------
             if topic == "general":
                 state.shift_emotion("playful", 0.3, "normal conversation")
-                # --- STYLE DETECTION  ---
+            # --- STYLE DETECTION  ---
 
             style = "normal"
 
-            concern = state.get_emotion_level("concerned")
-            playful = state.get_emotion_level("playful")
-            focus = state.get_emotion_level("focused")
-
-            if concern >= 0.2:
+            if topic in ("stress", "fatigue"):
                 style = "soft"
-
-            elif playful > 0.6:
-                style = "playful"
-
-            elif focus > 0.6:
+            elif topic == "work":
                 style = "direct"
+            else:
+                style = "normal"
 
             print(f"[EMOTIONAL TONE]: {style}")
 
