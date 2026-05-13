@@ -152,7 +152,7 @@ def main():
                     if prev == "fatigue":
                         state.response_intent = "working_while_tired"
                     else:
-                        state.response_intent = "focused work"
+                        state.response_intent = "focused_work"
 
             # ----------------------------
             # FATIGUE
@@ -216,6 +216,8 @@ def main():
                 style = "soft"
             elif topic == "work":
                 style = "direct"
+            elif topic == "general":
+                style = "playful"
             else:
                 style = "normal"
 
