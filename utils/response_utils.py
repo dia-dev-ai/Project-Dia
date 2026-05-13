@@ -141,6 +141,32 @@ def generate_response(
             )
             state.response_intent = None
             return response
+    # STRESS
+    if state.last_topic == "stress":
+
+        if intent == "emotional_overload":
+            response = apply_style(
+                "Hey… you don’t have to carry all of that alone.",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "pressure_building":
+            response = apply_style(
+                "That pressure’s been building up for a while, hasn’t it?",
+                style,
+            )
+            state.response_intent = None
+            return response
+
+        elif intent == "stress_checkin":
+            response = apply_style(
+                "You sound pretty stressed right now.",
+                style,
+            )
+            state.response_intent = None
+            return response
 
     # ------------------------------------------------
     # IDENTITY

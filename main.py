@@ -101,32 +101,37 @@ def main():
                 word in t
                 for word in ["stressed", "pressure", "overwhelmed", "too much"]
             ):
-                state.shift_emotion("concerned", 0.9, "user sounded stressed")
+
+                state.shift_emotion(
+                    "concerned",
+                    0.9,
+                    "user sounded stressed",
+                )
 
                 topic = "stress"
                 intensity = 0.7
 
                 if any(
-                    x in t for x in ["breaking down", "cant handle", "cant take it"]
+                    x in t
+                    for x in [
+                        "breaking down",
+                        "cant handle",
+                        "cant take it",
+                    ]
                 ):
-                    responses = [
-                        "Hey… you don’t have to carry all of that at once.",
-                        "That sounds like it’s getting too heavy… take a second.",
-                    ]
+                    state.response_intent = "emotional_overload"
 
-                elif any(x in t for x in ["overwhelmed", "too much"]):
-                    responses = [
-                        "That sounds like a lot to deal with at once.",
-                        "Seems like things are stacking up more than usual.",
+                elif any(
+                    x in t
+                    for x in [
+                        "overwhelmed",
+                        "too much",
                     ]
+                ):
+                    state.response_intent = "pressure_building"
 
                 else:
-                    responses = [
-                        "Feels like there’s a bit of pressure on you.",
-                        "Something’s weighing on you a little, isn’t it.",
-                    ]
-
-                response = random.choice(responses)
+                    state.response_intent = "stress_checkin"
 
             # ----------------------------
             # WORK
