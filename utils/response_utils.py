@@ -143,25 +143,6 @@ def generate_response(
             return response
 
     # ------------------------------------------------
-    # LATE NIGHT DETECTION
-    # ------------------------------------------------
-
-    # ------------------------------------------------
-    # LATE NIGHT INITIATIVE
-    # ------------------------------------------------
-
-    initiative = None
-
-    neutral_opening = not getattr(state, "response_intent", None) and getattr(
-        state, "conversation_turns", 0 == 1
-    )
-
-    if getattr(state, "late_night", False) and neutral_opening:
-        initiative = initiate_late_night(state)
-        state.late_night_initiated = True
-    if initiative:
-        return apply_style(initiative, style)
-    # ------------------------------------------------
     # IDENTITY
     # ------------------------------------------------
 
@@ -169,7 +150,18 @@ def generate_response(
         return apply_style(f"My name is {identity.name}.", style)
 
     if text in ("hi", "hello", "hey"):
-        state.late_night_stage = 0
+        # ------------------------------------------------
+        # LATE NIGHT INITIATIVE
+        # ------------------------------------------------
+        if (
+            getattr(state, "late_night", False)
+            and getattr(state, "conversation_turns", 0) == 1
+        ):
+            return apply_style(
+                initiate_late_night(state),
+                style,
+            )
+
         return apply_style("Hey.", style)
 
     # ------------------------------------------------
