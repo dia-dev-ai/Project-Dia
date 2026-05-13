@@ -152,19 +152,19 @@ def generate_response(
 
     initiative = None
 
-    late_night_triggered = any(p in text for p in LATE_NIGHT_PHRASES)
+    neutral_opening = state.last_topic == "general" and not getattr(
+        state, "response_intent", None
+    )
 
     if (
-        late_night_triggered
-        and can_initiate(state)
-        and not getattr(state, "response_intent", None)
+        getattr(state, "late_night", False)
+        and not state.late_night_initiated
+        and neutral_opening
     ):
         initiative = initiate_late_night(state)
-
+        state.late_night_initiated = True
     if initiative:
-        state.late_night = False
         return apply_style(initiative, style)
-
     # ------------------------------------------------
     # IDENTITY
     # ------------------------------------------------

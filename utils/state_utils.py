@@ -26,6 +26,8 @@ class DiaState:
         self.last_interaction: datetime | None = None
         self.dia_emotion_reason = ""
         self.active_emotions = {"playfull": 0.3}
+        self.late_night_initiated = False
+        self.late_night_initiated: bool = False
 
         self.last_user_input = ""
         self.previous_user_input = ""
