@@ -57,6 +57,7 @@ def main():
             # INPUT
             # ----------------------------
             user_input = input("> ").strip()
+            state.conversation_turns += 1
 
             if not user_input:
                 continue
@@ -137,17 +138,16 @@ def main():
                 intensity = 0.3
 
                 if any(x in t for x in ["stuck", "not working"]):
-                   state.response_intent = "frustrated_work"
+                    state.response_intent = "frustrated_work"
 
                 elif any(x in t for x in ["hours", "long"]):
                     state.response_intent = "overworking"
 
                 else:
-                     if prev == "fatigue":
+                    if prev == "fatigue":
                         state.response_intent = "working_while_tired"
-                     else:
+                    else:
                         state.response_intent = "focused work"
- 
 
             # ----------------------------
             # FATIGUE

@@ -27,7 +27,7 @@ class DiaState:
         self.dia_emotion_reason = ""
         self.active_emotions = {"playfull": 0.3}
         self.late_night_initiated = False
-        self.late_night_initiated: bool = False
+        self.conversation_turns: int = 0
 
         self.last_user_input = ""
         self.previous_user_input = ""

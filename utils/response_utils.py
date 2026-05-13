@@ -152,15 +152,13 @@ def generate_response(
 
     initiative = None
 
-    neutral_opening = state.last_topic == "general" and not getattr(
-        state, "response_intent", None
+    neutral_opening = (
+        state.last_topic == "general"
+        and not getattr(state, "response_intent", None)
+        and getattr(state, "conversation_turns", 0 <= 1)
     )
 
-    if (
-        getattr(state, "late_night", False)
-        and not state.late_night_initiated
-        and neutral_opening
-    ):
+    if getattr(state, "late_night", False) and neutral_opening:
         initiative = initiate_late_night(state)
         state.late_night_initiated = True
     if initiative:
