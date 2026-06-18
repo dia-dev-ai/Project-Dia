@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from utils.state_utils import EmotionalPosture
 from utils.core_memory_utils import get_random_nickname
 from utils.weighted_memory_utils import get_memory_strength
+import random
 
 LATE_NIGHT_PHRASES = (
     "it's late",
@@ -172,8 +173,15 @@ def generate_response(
             return response
 
         elif intent == "stress_checkin":
+            options = [
+                "Yeah... you do sound stressed.",
+                "It's okay... you don't have to carry it all alone.",
+                "Something's been bothering you, hasn't it?",
+                "Is there anything i can do that would make you feel better?.",
+            ]
+
             response = apply_style(
-                "You sound pretty stressed right now.",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
