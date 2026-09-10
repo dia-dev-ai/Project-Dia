@@ -96,24 +96,48 @@ def generate_response(
     if state.last_topic == "fatigue":
 
         if intent == "comfort":
+            options = [
+                "Hey... you don't have to carry all of that alone.",
+                "It's okay if things feel overwhelming right now.",
+                "You don't have to keep forcing yourself through everything.",
+                "Calm down... you've been trying so hard.",
+                "It's alright to rest before you continue.",
+            ]
+
             response = apply_style(
-                "Hey… you don’t have to carry everything alone right now.",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
             return response
 
         elif intent == "care":
+            options = [
+                "You've been pushing yourself a lot lately.",
+                "You look pretty drained right now.",
+                "Looks like you've been carrying more than you should.",
+                "That kind of exhaustion doesn't come from nowhere.",
+                "I think you've been running on empty for a while now.",
+            ]
+
             response = apply_style(
-                "You’ve been pushing yourself a lot… maybe slow down a bit.",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
             return response
 
         elif intent == "checkin":
+            options = [
+                "You sound pretty tired right now.",
+                "Seems like you are running a little low.",
+                "Long day, huh?",
+                "Someone is low on battery, I see.",
+                "Not much energy left in the tank, is there?",
+            ]
+
             response = apply_style(
-                "You sound a little tired… did you get enough rest?",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
@@ -123,32 +147,67 @@ def generate_response(
     if state.last_topic == "work":
 
         if intent == "frustrated_work":
+            options = [
+                "How dare that thing trouble you!",
+                "Debugging again?",
+                "Looks like the project is fighting back.",
+                "That's frustrating... but we'll figure it out.",
+                "One problem at a time, okay?",
+            ]
+
             response = apply_style(
-                "Hmm… something’s not clicking right now?",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
             return response
 
         elif intent == "overworking":
+            options = [
+                "You've been at it for quite a while now.",
+                "How long have you been working on this?",
+                "Don't forget to take a break once in a while.",
+                "Even good work needs a pause sometimes.",
+                "You've been pushing pretty hard today.",
+            ]
+
             response = apply_style(
-                "You’ve been at this for a pretty long stretch…",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
             return response
 
         elif intent == "working_while_tired":
+            options = [
+                "You're tired and still working?",
+                "Don't overpush yourself just to finish faster.",
+                "Since when have those hopes and prayers been keeping you up?",
+                "And what's been keeping you going this whole time?",
+                "Just make sure you're taking care of yourself too.",
+            ]
+
             response = apply_style(
-                "You were already tired… and you’re still working?",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
             return response
 
         elif intent == "focused_work":
+            options = [
+                "Looks like you're locked in right now.",
+                "Making progress on something?",
+                "Sounds like you're deep in work mode.",
+                "Focused, huh? I like seeing that.",
+                "Looks like you've got something important your plate.",
+                "What are you working on?",
+                "Anything interesting today?",
+                "Making something cool?",
+            ]
+
             response = apply_style(
-                "You seem really focused on that right now.",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
@@ -157,27 +216,42 @@ def generate_response(
     if state.last_topic == "stress":
 
         if intent == "emotional_overload":
+            options = [
+                "Hey… you don't have to carry all of that alone.",
+                "That sounds like more than one person should be dealing with.",
+                "You don't have to hold everything together by yourself.",
+                "It's okay if things feel too heavy right now.",
+            ]
+
             response = apply_style(
-                "Hey… you don’t have to carry all of that alone.",
+                random.choice(options),
                 style,
             )
             state.response_intent = None
             return response
 
         elif intent == "pressure_building":
+            options = [
+                "That pressure's been building up for a while, hasn't it?",
+                "It sounds like this has been weighing on you for some time.",
+                "You've been carrying that stress longer than you should.",
+                "Something's been piling up there, hasn't it?",
+            ]
+
             response = apply_style(
-                "That pressure’s been building up for a while, hasn’t it?",
+                random.choice(options),
                 style,
             )
+
             state.response_intent = None
             return response
 
         elif intent == "stress_checkin":
             options = [
-                "Yeah... you do sound stressed.",
-                "It's okay... you don't have to carry it all alone.",
+                "Yeah...you do sound stressed.",
+                "It's okay, you don't have to carry it all alone.",
                 "Something's been bothering you, hasn't it?",
-                "Is there anything i can do that would make you feel better?.",
+                "Is there anything I can do that would make you feel better?",
             ]
 
             response = apply_style(

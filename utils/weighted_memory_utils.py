@@ -14,7 +14,7 @@ def register_memory(topic: str, intensity: float):
         memory_store[topic] = {
             "strength": 0.3,
             "emotion_weight": intensity,
-            "last_updated": now
+            "last_updated": now,
         }
     else:
         memory_store[topic]["strength"] += 0.2
@@ -39,3 +39,9 @@ def decay_memory():
 
         if memory_store[topic]["strength"] < 0.1:
             del memory_store[topic]
+
+
+def get_strongest_memory():
+    if not memory_store:
+        return None
+    return max(memory_store.items(), key=lambda x: x[1]["strength"])[0]

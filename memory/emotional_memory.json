@@ -7,14 +7,14 @@
       "notes": "Emotional query detected."
     },
     "fatigue": {
-      "sensitivity_score": 0.0,
-      "last_triggered": "2026-04-17T20:19:38.791787",
+      "sensitivity_score": 0.6399999999999998,
+      "last_triggered": "2026-06-23T22:32:51.033414",
       "decay_rate": 0.02,
       "notes": "Emotional query detected."
     },
     "stress": {
-      "sensitivity_score": 0.30000000000000004,
-      "last_triggered": "2026-06-18T07:10:59.583317",
+      "sensitivity_score": 0.94,
+      "last_triggered": "2026-06-23T22:30:16.335767",
       "decay_rate": 0.02,
       "notes": ""
     }

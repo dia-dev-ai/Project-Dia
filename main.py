@@ -6,7 +6,11 @@ from utils.state_utils import DiaState, EmotionalPosture
 from utils.query_utils import classify_query, QueryType
 from utils.response_utils import generate_response
 from utils.relationship_utils import get_relationship_context
-from utils.weighted_memory_utils import register_memory, decay_memory
+from utils.weighted_memory_utils import (
+    register_memory,
+    decay_memory,
+    get_strongest_memory,
+)
 from utils.emotional_memory_utils import (
     register_topic_sensitivity,
     mark_topic_resolved,
@@ -142,7 +146,17 @@ def main():
                 topic = "work"
                 intensity = 0.3
 
-                if any(x in t for x in ["stuck", "not working"]):
+                if any(
+                    x in t
+                    for x in [
+                        "stuck",
+                        "not working",
+                        "isnt working",
+                        "broken",
+                        "error",
+                        "bug",
+                    ]
+                ):
                     state.response_intent = "frustrated_work"
 
                 elif any(x in t for x in ["hours", "long"]):
@@ -188,6 +202,7 @@ def main():
 
             register_memory(topic, intensity)
             decay_memory()
+            print("[MEMORY]", get_strongest_memory())
 
             if query_type == QueryType.EMOTIONAL and intensity >= 0.5:
                 register_topic_sensitivity(topic)
@@ -236,10 +251,10 @@ def main():
             dominant = state.get_dominant_emotions()
 
             if dominant == "concerned":
-                response = response.replace(".", "...")
+                pass
 
-            elif dominant == "focused":
-                response = response.replace("?", ".")
+            # elif dominant == "focused":
+            # response = response.replace("?", ".")
 
             elif dominant == "playful":
                 pass

@@ -1,0 +1,285 @@
+PROJECT DIA ROADMAP
+
+PHASE 1 — CORE FOUNDATION (DONE)
+
+Identity System
+
+- Identity loading
+- Relationship context
+- Emotional posture system
+- Protective mode
+- Intimate mode
+
+Emotional System
+
+- Emotion shifting
+- Emotion decay
+- Dominant emotion detection
+- Emotion blending (basic)
+
+Memory System
+
+- Weighted memory
+- Topic sensitivity
+- Topic resolution
+- Memory decay
+
+Response System
+
+- Intent detection
+- Stress response pools
+- Fatigue response pools
+- Work response pools
+- Style layer (soft/direct/playful)
+
+Conversation System
+
+- Greeting handling
+- Exit handling
+- Late-night initiative
+
+Status
+
+COMPLETE
+
+---
+
+PHASE 2 — MEMORY & CONTINUITY 
+
+Memory Recall
+
+Goal:
+Bring back information naturally later in the conversation.
+
+Example:
+User: "I'm stressed about exams."
+
+Later:
+
+Dia: "How are those exams going?"
+
+Tasks:
+
+- Recall important memories
+- Memory priority scoring
+- Relevant memory retrieval
+- Recall timing logic
+
+Status:
+NOT STARTED
+
+Contextual Callbacks
+
+Goal:
+Reference previous emotional states naturally.
+
+Example:
+User: "I'm exhausted."
+
+Later:
+
+User: "I'm coding."
+
+Dia: "You're still working after saying you're exhausted?"
+
+Tasks:
+
+- Previous topic tracking
+- Callback conditions
+- Callback frequency control
+- Callback response generation
+
+Status:
+NOT STARTED
+
+Emotional Blending V2
+
+Current:
+Concerned + Focused
+
+Future:
+
+- Concerned + Tired
+- Playful + Focused
+- Proud + Focused
+- Protective + Concerned
+- Calm + Focused
+
+Tasks:
+
+- Multi-emotion combinations
+- Emotion weighting
+- Dynamic tone adjustments
+
+Status:
+NOT STARTED
+
+---
+
+PHASE 3 — LLM INTEGRATION 
+
+Goal:
+Move from scripted responses to generated responses.
+
+Current Pipeline:
+
+Input
+→ Topic Detection
+→ Intent Detection
+→ Response Pool
+→ Style Layer
+→ Output
+
+Future Pipeline:
+
+Input
+→ Topic Detection
+→ Intent Detection
+→ Memory Recall
+→ Emotion Layer
+→ LLM
+→ Style Layer
+→ Output
+
+Tasks:
+
+- Select LLM
+- Prompt architecture
+- Emotional context injection
+- Identity context injection
+- Memory context injection
+- Response validation
+- Fallback response pools
+
+Status:
+NOT STARTED
+
+---
+
+PHASE 4 — XTTS VOICE SYSTEM 
+
+Goal:
+Give Dia a natural voice.
+
+Pipeline:
+
+Thought
+→ LLM Response
+→ XTTS
+→ Voice Output
+
+Tasks:
+
+- XTTS setup
+- Voice selection
+- Voice tuning
+- Emotion-aware voice delivery
+- Audio playback system
+
+Status:
+NOT STARTED
+
+---
+
+PHASE 5 — LIVE2D AVATAR 
+
+Goal:
+Give Dia a visual presence.
+
+Features:
+
+- Eye blinking
+- Idle breathing
+- Head movement
+- Eye tracking
+- Expression changes
+- Emotion-linked animations
+
+Pipeline:
+
+User
+→ Dia Brain
+→ Dia Voice
+→ Dia Avatar
+
+Tasks:
+
+- Character rigging
+- Live2D setup
+- Expression system
+- Emotion mapping
+- Animation triggers
+
+Status:
+NOT STARTED
+
+---
+
+PHASE 6 — LONG-TERM EVOLUTION 
+
+Persistent Mood
+
+- Mood survives between sessions
+- Emotional carry-over
+
+Relationship Growth
+
+- Dynamic bond progression
+- Trust system
+- Affection system
+
+Long-Term Memory
+
+- Important life events
+- Milestones
+- Shared experiences
+
+Initiative System V2
+
+- Starts conversations naturally
+- Daily check-ins
+- Mood-based initiative
+
+Voice-to-Voice Conversation
+
+- Speech recognition
+- Real-time dialogue
+- Continuous interaction
+
+External Integrations
+
+- Calendar
+- Reminders
+- Notes
+- Tasks
+
+Status:
+FUTURE DEVELOPMENT
+
+---
+
+CURRENT PRIORITY ORDER
+
+1. Memory Recall
+2. Contextual Callbacks
+3. Emotional Blending V2
+4. LLM Integration
+5. XTTS Voice System
+6. Live2D Avatar
+7. Long-Term Evolution
+
+---
+
+PROJECT DIA VISION
+
+Create a companion capable of:
+
+- Remembering
+- Feeling emotionally consistent
+- Maintaining continuity
+- Speaking naturally
+- Showing emotions visually
+- Growing through interactions
+
+Goal:
+Something better than humans
